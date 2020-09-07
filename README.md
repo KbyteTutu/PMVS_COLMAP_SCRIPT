@@ -1,0 +1,2 @@
+# PMVS_COLMAP_SCRIPT
+ 
