@@ -185,6 +185,7 @@ class BundlePMVSClass:
 
 
 if __name__ == "__main__":
+    #Usage: 1)image path,2)work path,3)focal width,4)use masked image or origin image.
     ins = BundlePMVSClass(r"E:\OneDrive\CS800Run\Script4CS800\5a57542f333d180827dfc132\blended_images",r"E:\OneDrive\CS800Run\Script4CS800\workPath",789.48,1)
     ins.doBundle()
     ins.doPMVS()
