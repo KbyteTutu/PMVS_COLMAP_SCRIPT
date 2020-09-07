@@ -7,13 +7,13 @@
 from cv2 import cv2
 import numpy as np
 import math, time, os, sys, shutil,subprocess,gzip,logging
-
-import UtilityFunctions as Util
-
 from PIL import Image
 
+import UtilityFunctions as Util
+from DatasetAnalyzer import datasetAnalyzer
 
 class BundlePMVSClass:
+    #Usage: 1)image path,2)work path,3)focal width,4)use masked image or origin image.
 
     # E:\OneDrive\CS800Run\Script4CS800\software\bundler\bin\KeyMatchFull.exe FeatureList.txt matches.init.txt
     # E:\OneDrive\CS800Run\Script4CS800\software\bundler\bin\bundler.exe list.txt --options_file options.txt
@@ -188,9 +188,11 @@ class BundlePMVSClass:
         logging.info("Finished!")
 
 
-
 if __name__ == "__main__":
-    #Usage: 1)image path,2)work path,3)focal width,4)use masked image or origin image.
-    ins = BundlePMVSClass(r".\example\5adc6bd52430a05ecb2ffb85\blended_images",r".\workspace",633.54,0)
+    info = datasetAnalyzer(r".\example\5adc6bd52430a05ecb2ffb85")
+
+    f = info.getIntrinsicPara()[0,0]
+
+    ins = BundlePMVSClass(info.getPhotoPath,r".\workspace",f,1)
     ins.doBundle()
     ins.doPMVS()
