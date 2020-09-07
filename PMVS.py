@@ -31,10 +31,17 @@ class BundlePMVSClass:
         self.workDir = workDir
         self.useMasked = useMasked
         self.f = f
+
+
         #准备目录
         self.maskedDir = os.path.join(self.workDir,"masked")
         self.photosDir = os.path.join(self.workDir,"photos")
-        self.pmvsWorkDir = self.photosDir
+
+        if self.useMasked == 1:
+            self.pmvsWorkDir = self.maskedDir
+        elif self.useMasked == 0:
+            self.pmvsWorkDir = self.photosDir
+
         self.currentDir = os.getcwd()
         self.bundler2PmvsExecutable = os.path.join(self.currentDir,self.bundle2pmvsPrefix)
         self.RadialUndistordExecutable = os.path.join(self.currentDir,self.radialPrefix)
@@ -54,10 +61,6 @@ class BundlePMVSClass:
 
 
     def photoPreprocess(self,f):
-        if self.useMasked == 1:
-            self.pmvsWorkDir = self.maskedDir
-        elif self.useMasked == 0:
-            self.pmvsWorkDir = self.photosDir
         #分开原图和masked图，并在图片文件夹里加统计文件list.txt
         listFile = open(os.path.join(self.pmvsWorkDir,"PhotoList.txt"),"w")
         focal = f
@@ -159,6 +162,7 @@ class BundlePMVSClass:
         print("Running Bundle2Vis to generate vis.dat")
         subprocess.call([self.Bundle2VisExecutable, "pmvs/bundle.rd.out", "pmvs/vis.dat"])
 
+        os.chdir(self.currentDir)
         os.chdir(os.path.join(self.pmvsWorkDir,"pmvs"))
         #Rename all the files to the correct name
         undistortTextFile = open("list.rd.txt", "r")
@@ -177,6 +181,7 @@ class BundlePMVSClass:
 
         undistortTextFile.close()
 
+        os.chdir(self.currentDir)
         os.chdir(os.path.join(self.pmvsWorkDir,"pmvs"))
         subprocess.call([self.pmvsExecutable, "./", "pmvs_options.txt"])
 
@@ -186,6 +191,6 @@ class BundlePMVSClass:
 
 if __name__ == "__main__":
     #Usage: 1)image path,2)work path,3)focal width,4)use masked image or origin image.
-    ins = BundlePMVSClass(r"E:\OneDrive\CS800Run\Script4CS800\5a57542f333d180827dfc132\blended_images",r"E:\OneDrive\CS800Run\Script4CS800\workPath",789.48,1)
+    ins = BundlePMVSClass(r".\example\5adc6bd52430a05ecb2ffb85\blended_images",r".\workspace",633.54,1)
     ins.doBundle()
     ins.doPMVS()
