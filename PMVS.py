@@ -191,6 +191,6 @@ class BundlePMVSClass:
 
 if __name__ == "__main__":
     #Usage: 1)image path,2)work path,3)focal width,4)use masked image or origin image.
-    ins = BundlePMVSClass(r".\example\5adc6bd52430a05ecb2ffb85\blended_images",r".\workspace",633.54,1)
+    ins = BundlePMVSClass(r".\example\5adc6bd52430a05ecb2ffb85\blended_images",r".\workspace",633.54,0)
     ins.doBundle()
     ins.doPMVS()
